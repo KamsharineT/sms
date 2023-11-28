@@ -16,26 +16,26 @@ import json
 import messagebird
 import psycopg2
 
-conn = mysql.connector.connect(user = 'root', password = 'root' ,host='10.100.99.145', port = '3306', database="alarms")
-# conn = mysql.connector.connect(user = 'root', password = 'root' ,host='localhost', port = "3306", database="alarms") #local machine- testing purpose
+
+conn = mysql.connector.connect(user = 'root', password = 'root' ,host='localhost', port = "3306", database="alarms") #local machine- testing purpose
 # conn = mysql.connector.connect(user = os.environ['MYSQL_USER'], password = 'root' ,host=os.environ['MYSQL_HOST'], port = "3310", database="alarms")
 print("DB Connected")
 
 cursor = conn.cursor()
 
-fetchapi = "https://wqprofiling.flotech.io/graphql/"
+fetchapi = ""
 email = "admin@gmail.com"
 password = "123123"
-Headers = {'Authorization': 'jwt ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTY2NDg1MjE4OSwib3JpZ0lhdCI6MTY2NDg1MTg4OX0.w0V6WhEiM9ydro-fxU9txxs3vfXNo4DZ6X0gxJkuRis'}
+Headers = {'Authorization': 'jwt ' + ''}
 
 
 def alarm(devicetag,chl,cond,Do,ph,tur,status,rectime,depth,device_type):
     connection = psycopg2.connect(
-    host="flotech-profiling-instance.cmg5uiwc0uiw.ap-southeast-1.rds.amazonaws.com",
-    database="profilingdb",
-    port="8435",
-    user="flotech",
-    password="Flotech787814")
+    host="",
+    database="",
+    port="",
+    user="",
+    password="")
     maincur = connection.cursor()
 
     sqlcom = "Select stname,pH_min,pH_max,Chladj_min,Chladj_max,DO_min,DO_max,Conductivity_min,Conductivity_max,Turbidity_min,Turbidity_max from stations_det where stnameid = %s"
@@ -73,19 +73,19 @@ def alarm(devicetag,chl,cond,Do,ph,tur,status,rectime,depth,device_type):
 
                     if(Chladj_max is not None):
                         if float(chl) < 100 and float(chl) > float(Chladj_max):
-                            if(devicetag) in ("SE518","SE504","SE512","SE525","SE565","SE581","SE510","SE534","SE533","SE514","SE563","SE535","SE537","SE564","SE552"):
+                            if(devicetag) in (""):
                                 smsbody = "\n"+"Chl-Adj:"+str(chl)+" ug/l"+"\n"+str(rectime)+"\n"+"UL:"+str(Chladj_max)+"\n"+"LL:"+str(Chladj_min)+"\n1) Site check"+"\n2) MRRS2/aeration/boat churning/SPC"
                                 body = body+smsbody
                             else:
-                                if(devicetag) not in ("SE540","SE533","SE523"):
+                                if(devicetag) not in (""):
                                     smsbody = "\n"+"Chl-Adj:"+str(chl)+" ug/l"+"\n"+str(rectime)+"\n"+"UL:"+str(Chladj_max)+"\n"+"LL:"+str(Chladj_min)+"\n1) Site check"+"\n2) aeration/boat churning/SPC"
                                     body = body+smsbody
                         if float(chl) > 100:
-                            if(devicetag) in ("SE518","SE504","SE512","SE525","SE565","SE581","SE510","SE534","SE533","SE514","SE563","SE535","SE537","SE564","SE552"):
+                            if(devicetag) in (""):
                                 smsbody = "\n"+"Chl-Adj:"+str(chl)+" ug/l"+"\n"+str(rectime)+"\n"+"UL:"+str(Chladj_max)+"\n"+"LL:"+str(Chladj_min)+"\n1) Site check"+"\n2) MRRS/ aeration/boat churning/scum removal"
                                 body = body+smsbody
                             else:
-                                if(devicetag) not in ("SE540","SE533","SE523"):
+                                if(devicetag) not in (""):
                                     smsbody = "\n"+"Chl-Adj:"+str(chl)+" ug/l"+"\n"+str(rectime)+"\n"+"UL:"+str(Chladj_max)+"\n"+"LL:"+str(Chladj_min)+"\n1) Site check"+"\n2) aeration/boat churning/scum removal"
                                     body = body+smsbody
 
@@ -274,11 +274,11 @@ class sms():
     while True:
 
         connection = psycopg2.connect(
-        host="flotech-profiling-instance.cmg5uiwc0uiw.ap-southeast-1.rds.amazonaws.com",
-        database="profilingdb",
-        port="8435",
-        user="flotech",
-        password="Flotech787814")
+        host="",
+        database="",
+        port="",
+        user="",
+        password="")
         maincur = connection.cursor()
 
 

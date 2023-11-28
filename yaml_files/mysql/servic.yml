@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
-  namespace: flotech-system
+  namespace: 
   labels:
-    app: fth-pub-mysql
+    app: 
 spec:
   type: ClusterIP
   selector:
-    app: fth-pub-mysql  
+    app:   
   ports:
   - port: 3306
     targetPort: 3306
