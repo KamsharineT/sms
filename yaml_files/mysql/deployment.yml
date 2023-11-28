@@ -1,0 +1,40 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: pub-mysql 
+  namespace: flotech-system 
+  labels:         
+    app: fth-pub-mysql
+spec:
+  selector:
+    matchLabels:        
+      app: fth-pub-mysql
+  strategy:
+    type: Recreate
+  template:       
+    metadata:
+      labels:   
+        app: fth-pub-mysql
+    spec:                         
+      containers:
+      - image: 413635231404.dkr.ecr.ap-southeast-1.amazonaws.com/pub-mysql:0.0.1    
+        name: pub-mysql
+        env:                     
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom:              
+            configMapKeyRef:
+              name: pub-mysql-configmap
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: pub-mysql-configmap
+              key: database
+        ports:
+        - containerPort: 3306          
+          name: mysql
+        
+
+          

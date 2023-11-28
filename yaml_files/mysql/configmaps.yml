@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pub-mysql-configmap
+  namespace: flotech-system
+data:
+  username: root
+  database: alarms
+  password: root
+metadata:
+  name: pub-mysql-configmap
+  namespace: flotech-system
+data:
+  username: root
+  database: alarms
+  password: root

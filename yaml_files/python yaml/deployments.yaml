@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pub-sms
+  namespace: flotech-system 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fth-pub-sms
+  template:
+    metadata:
+      name: pub-sms 
+      labels:
+        app: fth-pub-sms
+    spec:
+      containers:
+      - name: pub-sms
+        image: 413635231404.dkr.ecr.ap-southeast-1.amazonaws.com/pub-sms:0.0.32 #Input
+        ports:
+        - containerPort: 3307 
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: pub-mysql-configmap
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: pub-mysql-configmap
+              key: password
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: hostname-config
+              key: mysql_host
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pub-sms-service
+  namespace: flotech-system 
+  labels:
+    app: fth-pub-sms
+spec:
+  type: LoadBalancer
+  selector:
+    app: fth-pub-sms  
+  ports:
+    - name: pub-sms
+      port: 3307
+      targetPort: 3307
+      protocol: TCP
